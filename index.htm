@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>	
+	<meta charset=utf-8>
+	<title>跑车大闯关</title>
+	<link rel="stylesheet" href="css/cargame.css" />
+								
+				
+</head>
+<body>
+
+    <section id="game-container">
+
+        <canvas id="game" width='1200' height='600' class="startscreen"></canvas>
+
+        <!-- 不在使用燃料的设置
+        <div id="fuel" class="progressbar">
+            <div class="fuel-value" style="width: 100%;"></div>
+        </div>
+        -->
+        <div id="speed-text">速度:</div>
+        <div id="speed" class="progressbar">
+            <div class="speed-value" style="width: 0%"></div>
+        </div>
+
+        <div id="level"></div>
+        <div id="timer">Time:<span id="timeCount"></span>sec</div>
+        <div id="play"><a class="musicButton" href="#game"></a> </div>
+        <div id="replay"><a class="musicButton" href="#end"></a> </div>
+
+        <audio id="buttonover">
+          <source src="media/button_over.wav" />
+          <source src="media/button_over.ogg" />
+        </audio>
+        <audio id="buttonactive">
+          <source src="media/button_active.mp3" />
+          <source src="media/button_active.ogg" />
+        </audio>
+        <audio id="melody">
+          <source src="media/minuet_in_g_melody.mp3" />
+          <source src="media/minuet_in_g_melody.ogg" />
+        </audio>
+        <audio id="base">
+          <source src="media/minuet_in_g.mp3" />
+          <source src="media/minuet_in_g.ogg" />
+        </audio>
+
+        <div id="levelPanel">
+            <div id="1" class="lock"><p>1</p></div><div id="2" class="lock" ><p>2</p></div><div id="3" class="lock"><p>3</p></div><div id="4" class="lock"><p>4</p></div>
+            <div id="5" class="lock"><p>5</p></div><div id="6" class="lock"><p>6</p></div><div id="7" class="lock"><p>7</p></div><div id="8" class="lock"><p>8</p></div>
+            <div id="9" class="lock"><p>8</p></div><div id="10" class="lock"><p>10</p></div><div id="11" class="lock"><p>11</p></div><div id="12" class="lock"><p>12</p></div>
+        </div>
+        <div id="levelResults">
+			<h1>总得分:<span id="totalScore"></span></h1>
+            <div id="button">
+                <a id="again" class="musicButton" href="#"><h2>重玩</h2></a>
+                <a id="menu" class="musicButton" href="#"><h2>关卡</h2></a>
+                <a id="next" class="musicButton" href="#"><h2>下一关</h2></a>
+            </div>
+        </div>
+		<div id="rule">
+			<h3>游戏规则：</h3>
+			<p>按键驱动跑车，按<span>A</span>后退，按<span>D</span>前进。<br>控制跑车冲过关卡，使其成功到达终点，冲关成功即获得相应分数并进入下一关。</p>
+		</div>		
+    </section>
+
+
+    <div id="asset">
+        <!--<img id="flag" src='images/flag.png'>-->
+        <img id="bus" src="images/bus.png">
+        <img id="wheel" src="images/wheel.png">
+    </div>
+
+	
+	<!--=============================-->
+	<!-- Copy this part to your app. -->
+	<!-- START                       -->
+	<!--=============================-->
+	<!-- libs -->
+	<!--[if IE]><script type="text/javascript" src="js/excanvas.js"></script><![endif]-->
+	<script src="js/protoclass.js"></script>
+	<script src="js/jquery-1.6.min.js"></script>
+
+	<!-- ������box2djs�Ĵ���~��û�в���ѹ����ģ������޸�Ϊѹ�����~����ʲô��~��ȫ��copy����~-->
+	<!-- box2djs -->
+<script src='js/box2d/common/b2Settings.js'></script>
+<script src='js/box2d/common/math/b2Vec2.js'></script>
+<script src='js/box2d/common/math/b2Mat22.js'></script>
+<script src='js/box2d/common/math/b2Math.js'></script>
+<script src='js/box2d/collision/b2AABB.js'></script>
+<script src='js/box2d/collision/b2Bound.js'></script>
+<script src='js/box2d/collision/b2BoundValues.js'></script>
+<script src='js/box2d/collision/b2Pair.js'></script>
+<script src='js/box2d/collision/b2PairCallback.js'></script>
+<script src='js/box2d/collision/b2BufferedPair.js'></script>
+<script src='js/box2d/collision/b2PairManager.js'></script>
+<script src='js/box2d/collision/b2BroadPhase.js'></script>
+<script src='js/box2d/collision/b2Collision.js'></script>
+<script src='js/box2d/collision/Features.js'></script>
+<script src='js/box2d/collision/b2ContactID.js'></script>
+<script src='js/box2d/collision/b2ContactPoint.js'></script>
+<script src='js/box2d/collision/b2Distance.js'></script>
+<script src='js/box2d/collision/b2Manifold.js'></script>
+<script src='js/box2d/collision/b2OBB.js'></script>
+<script src='js/box2d/collision/b2Proxy.js'></script>
+<script src='js/box2d/collision/ClipVertex.js'></script>
+<script src='js/box2d/collision/shapes/b2Shape.js'></script>
+<script src='js/box2d/collision/shapes/b2ShapeDef.js'></script>
+<script src='js/box2d/collision/shapes/b2BoxDef.js'></script>
+<script src='js/box2d/collision/shapes/b2CircleDef.js'></script>
+<script src='js/box2d/collision/shapes/b2CircleShape.js'></script>
+<script src='js/box2d/collision/shapes/b2MassData.js'></script>
+<script src='js/box2d/collision/shapes/b2PolyDef.js'></script>
+<script src='js/box2d/collision/shapes/b2PolyShape.js'></script>
+<script src='js/box2d/dynamics/b2Body.js'></script>
+<script src='js/box2d/dynamics/b2BodyDef.js'></script>
+<script src='js/box2d/dynamics/b2CollisionFilter.js'></script>
+<script src='js/box2d/dynamics/b2Island.js'></script>
+<script src='js/box2d/dynamics/b2TimeStep.js'></script>
+<script src='js/box2d/dynamics/contacts/b2ContactNode.js'></script>
+<script src='js/box2d/dynamics/contacts/b2Contact.js'></script>
+<script src='js/box2d/dynamics/contacts/b2ContactConstraint.js'></script>
+<script src='js/box2d/dynamics/contacts/b2ContactConstraintPoint.js'></script>
+<script src='js/box2d/dynamics/contacts/b2ContactRegister.js'></script>
+<script src='js/box2d/dynamics/contacts/b2ContactSolver.js'></script>
+<script src='js/box2d/dynamics/contacts/b2CircleContact.js'></script>
+<script src='js/box2d/dynamics/contacts/b2Conservative.js'></script>
+<script src='js/box2d/dynamics/contacts/b2NullContact.js'></script>
+<script src='js/box2d/dynamics/contacts/b2PolyAndCircleContact.js'></script>
+<script src='js/box2d/dynamics/contacts/b2PolyContact.js'></script>
+<script src='js/box2d/dynamics/b2ContactManager.js'></script>
+<script src='js/box2d/dynamics/b2World.js'></script>
+<script src='js/box2d/dynamics/b2WorldListener.js'></script>
+<script src='js/box2d/dynamics/joints/b2JointNode.js'></script>
+<script src='js/box2d/dynamics/joints/b2Joint.js'></script>
+<script src='js/box2d/dynamics/joints/b2JointDef.js'></script>
+<script src='js/box2d/dynamics/joints/b2DistanceJoint.js'></script>
+<script src='js/box2d/dynamics/joints/b2DistanceJointDef.js'></script>
+<script src='js/box2d/dynamics/joints/b2Jacobian.js'></script>
+<script src='js/box2d/dynamics/joints/b2GearJoint.js'></script>
+<script src='js/box2d/dynamics/joints/b2GearJointDef.js'></script>
+<script src='js/box2d/dynamics/joints/b2MouseJoint.js'></script>
+<script src='js/box2d/dynamics/joints/b2MouseJointDef.js'></script>
+<script src='js/box2d/dynamics/joints/b2PrismaticJoint.js'></script>
+<script src='js/box2d/dynamics/joints/b2PrismaticJointDef.js'></script>
+<script src='js/box2d/dynamics/joints/b2PulleyJoint.js'></script>
+<script src='js/box2d/dynamics/joints/b2PulleyJointDef.js'></script>
+<script src='js/box2d/dynamics/joints/b2RevoluteJoint.js'></script>
+<script src='js/box2d/dynamics/joints/b2RevoluteJointDef.js'></script>
+	<!--=============================-->
+	<!-- Copy this part to your app. -->
+	<!-- END                         -->
+	<!--=============================-->
+
+    <script src="js/global.js"></script>
+    <script src='js/levels.js'></script>
+    <script src='js/create.js'></script>
+    <script src='js/draw.js'></script>
+    <script src='js/control.js'></script>
+    <script src='js/music.js'></script>
+
+</body>
+</html>
